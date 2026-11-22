@@ -1,0 +1,56 @@
+﻿@model Gantu_Diego_T1.Models.Libro
+
+@{
+    ViewData["Title"] = "Registrar Libro";
+}
+
+<div class="contenedor-biblioteca">
+    <h1>Registrar Libro</h1>
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="mensaje-alerta">
+            <strong>@ViewBag.Mensaje</strong>
+        </div>
+    }
+
+    @using (Html.BeginForm("Crear", "Libro", FormMethod.Post, new { @class = "formulario-libro" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="campo-formulario">
+            @Html.LabelFor(model => model.NombreLibro)
+            @Html.EditorFor(model => model.NombreLibro)
+            @Html.ValidationMessageFor(model => model.NombreLibro)
+        </div>
+
+        <div class="campo-formulario">
+            @Html.LabelFor(model => model.Autor)
+            @Html.EditorFor(model => model.Autor)
+            @Html.ValidationMessageFor(model => model.Autor)
+        </div>
+
+        <div class="campo-formulario">
+            @Html.LabelFor(model => model.NombreEditorial)
+            @Html.EditorFor(model => model.NombreEditorial)
+            @Html.ValidationMessageFor(model => model.NombreEditorial)
+        </div>
+
+        <div class="campo-formulario">
+            @Html.LabelFor(model => model.ISDN)
+            @Html.EditorFor(model => model.ISDN)
+            @Html.ValidationMessageFor(model => model.ISDN)
+        </div>
+
+        <div class="acciones-formulario">
+            <button type="submit" class="btn btn-exito">Guardar</button>
+            @Html.ActionLink("Volver al Listado", "Index", "Libro", null, new { @class = "btn btn-secundario" })
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

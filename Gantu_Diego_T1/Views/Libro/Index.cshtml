@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Gantu_Diego_T1.Models.Libro>
+
+@{
+    ViewData["Title"] = "Listado de Libros";
+}
+
+<div class="contenedor-biblioteca">
+    <h1>Listado de Libros</h1>
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="mensaje-alerta">
+            <strong>@ViewBag.Mensaje</strong>
+        </div>
+    }
+
+    <div class="barra-acciones">
+        <div>
+            @Html.ActionLink("Registrar Nuevo Libro", "Crear", "Libro", null, new { @class = "btn btn-exito" })
+        </div>
+
+        @using (Html.BeginForm("BuscarPorAutor", "Libro", FormMethod.Get, new { @class = "filtro-autor" }))
+        {
+            <label for="autor">Buscar por Autor:</label>
+            <input type="text" id="autor" name="autor" value="@ViewBag.FiltroAutor" placeholder="Ingrese nombre del autor" />
+            <button type="submit" class="btn btn-primario">Buscar</button>
+            @Html.ActionLink("Limpiar", "Index", "Libro", null, new { @class = "btn btn-secundario" })
+        }
+    </div>
+
+    <div class="tabla-contenedor">
+        <table class="tabla-libros">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>NombreLibro</th>
+                    <th>Autor</th>
+                    <th>NombreEditorial</th>
+                    <th>ISDN</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.NombreLibro)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Autor)</td>
+                        <td>@Html.DisplayFor(modelItem => item.NombreEditorial)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ISDN)</td>
+                        <td>
+                            <div class="celda-acciones">
+                                @Html.ActionLink("Editar", "Editar", "Libro", new { id = item.Id }, new { @class = "btn btn-editar" })
+
+                                @using (Html.BeginForm("Eliminar", "Libro", new { id = item.Id }, FormMethod.Post, true, new { @class = "form-eliminar-inline", onsubmit = "return confirm('¿Está seguro de que desea eliminar este libro?');" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-eliminar">Eliminar</button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
